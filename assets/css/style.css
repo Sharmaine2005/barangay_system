@@ -1,0 +1,781 @@
+/* assets/css/style.css */
+
+/* --- 1. VARIABLES --- */
+:root {
+    --primary-color: #0c2461;
+    --accent-color: #f39c12;
+    --bg-color: #f4f6f9;
+    --text-color: #2f3640;
+    --white: #ffffff;
+    --success: #27ae60;
+    --danger: #c0392b;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --radius: 6px;
+}
+
+/* --- 2. GLOBAL RESET --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-color); font-size: 14px; } /* Reduced base font size */
+a { text-decoration: none; color: inherit; }
+
+/* --- 3. COMPONENTS --- */
+.card { background: var(--white); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); border-top: 4px solid var(--accent-color); margin-bottom: 20px; }
+.btn-primary { background-color: var(--primary-color); color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; width: 100%; transition: 0.2s; }
+.btn-primary:hover { background-color: #192a56; }
+input, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
+
+/* --- 4. ADMIN DASHBOARD LAYOUT --- */
+.admin-wrapper { display: flex; min-height: 100vh; width: 100%; overflow-x: hidden; }
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background-color: var(--primary-color);
+    color: white;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s;
+}
+.sidebar .brand { padding: 15px; font-size: 1.1rem; font-weight: bold; text-align: center; background: #081d52; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.8); transition: 0.2s; border-left: 4px solid transparent; font-size: 0.95rem; display: flex; align-items: center; }
+.sidebar a i { margin-right: 12px; width: 20px; text-align: center; font-size: 1.1rem; }
+.sidebar a:hover { background: rgba(255,255,255,0.1); color: white; }
+.sidebar a.active { background: rgba(255,255,255,0.15); color: var(--accent-color); border-left-color: var(--accent-color); }
+.sidebar-footer { margin-top: auto; padding: 15px; }
+.sidebar-footer a { border: 1px solid #ff6b6b; color: #ff6b6b; text-align: center; border-radius: 4px; padding: 8px; justify-content: center; }
+.sidebar-footer a:hover { background: #ff6b6b; color: white; }
+
+/* MAIN CONTENT */
+.main-content { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
+.top-header { background: white; padding: 10px 25px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; height: 60px; }
+.page-title { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); margin: 0; }
+.content-padding { padding: 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+/* HEADER PROFILE */
+.user-profile { display: flex; align-items: center; cursor: pointer; padding: 5px 10px; border-radius: 20px; transition: 0.2s; }
+.user-profile:hover { background: #f0f0f0; }
+.user-name { margin-right: 10px; font-weight: 600; color: var(--primary-color); font-size: 0.9rem; }
+.profile-icon { width: 32px; height: 32px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+
+/* TABLES */
+/* TABLES */
+.table-container { overflow-x: auto; margin-top: 20px; /* Added margin for proper spacing */ }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+th { background: #f8f9fa; color: #555; font-weight: 600; }
+.status-pending { color: #e67e22; background: #fff3cd; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+.status-approved { color: #27ae60; background: #d4edda; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+.status-rejected { color: #c0392b; background: #f8d7da; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+
+/* --- RESPONSIVE DASHBOARD (Half Screen / Tablet) --- */
+@media (max-width: 992px) {
+    /* Shrink Sidebar to Icons Only */
+    .sidebar { width: 70px; }
+    .sidebar .brand { font-size: 0.7rem; padding: 15px 5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .sidebar a { padding: 15px; justify-content: center; }
+    .sidebar a i { margin-right: 0; font-size: 1.3rem; }
+    /* Hide Text Labels */
+    .sidebar a span, .sidebar .brand span, .user-name { display: none; }
+    .sidebar-footer a { border: none; font-size: 1.2rem; }
+}
+
+/* --- LOGIN / REGISTER PAGE STYLES --- */
+.login-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, var(--primary-color), #1e3799); padding: 20px; }
+.login-card { width: 100%; max-width: 400px; padding: 30px; }
+
+/* --- 5. CARDS (Forms & Content Areas) --- */
+.card {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-top: 5px solid var(--accent-color); /* The "Government" gold accent */
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+}
+
+h2 { margin-bottom: 1.5rem; color: var(--primary-color); }
+p { margin-bottom: 1rem; color: #666; }
+
+/* --- 6. FORM ELEMENTS --- */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+}
+
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(12, 36, 97, 0.2);
+}
+
+/* --- 7. BUTTONS --- */
+button, .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Primary Button (Submit, Login) */
+button[type="submit"], .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    width: 100%; /* Full width for forms */
+}
+
+button:hover {
+    background-color: #192a56;
+    transform: translateY(-2px); /* Subtle lift effect */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Action Buttons (Approve/Decline) */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    margin-right: 5px;
+    width: auto; /* Auto width for tables */
+}
+
+.btn-approve { background-color: var(--success); color: white; }
+.btn-approve:hover { background-color: #219150; }
+
+.btn-decline { background-color: var(--danger); color: white; }
+.btn-decline:hover { background-color: #a93226; }
+
+.btn-print { background-color: #17a2b8; color: white; text-decoration: none; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem;}
+.btn-print:hover { background-color: #138496; }
+
+/* --- 8. FIXED & SCROLLABLE TABLES --- */
+.table-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding: 20px;
+    max-height: 500px;      /* Limits height to create vertical scroll */
+    overflow-y: auto;       /* Scroll downward */
+    overflow-x: auto;       /* <--- CHANGE THIS to 'auto' to enable horizontal scroll */
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+table {
+    width: 100% !important; 
+    min-width: 1000px;      /* <--- ADD THIS: Forces table to be wide enough to trigger scroll on phones */
+    table-layout: auto;     /* <--- CHANGE THIS: Allows columns to expand based on content */
+    border-collapse: collapse;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px;
+    border: 1px solid var(--primary-color);
+    white-space: nowrap;    /* <--- ADD THIS: Keeps headers in one line */
+}
+
+td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    vertical-align: top;
+    
+    /* Optional: Decide if you want text to wrap or not */
+    white-space: nowrap;    /* Keeps data in one line (better for scrolling) */
+    /* If you prefer wrapping text, remove 'white-space: nowrap' and use the min-width on the table */
+}
+/* --- 9. ADMIN STATIC SIDEBAR LAYOUT --- */
+
+/* Wrapper: Holds Sidebar + Main Content side-by-side */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh; /* Full screen height */
+    width: 100%;
+}
+
+/* SIDEBAR: Fixed width, visible always */
+.sidebar {
+    width: 250px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    flex-shrink: 0; /* Prevents shrinking */
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Sidebar Brand/Logo Area */
+.sidebar .brand {
+    padding: 20px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    background-color: #081d52; /* Darker Blue */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Menu Links */
+.sidebar a {
+    display: block;
+    padding: 15px 25px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: 0.3s;
+    border-left: 4px solid transparent;
+    font-size: 1rem;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.sidebar a.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--accent-color);
+    border-left-color: var(--accent-color);
+}
+
+/* Footer (Logout) */
+.sidebar-footer {
+    margin-top: auto; /* Pushes to bottom */
+    padding: 20px;
+}
+
+.sidebar-footer a {
+    text-align: center;
+    border: 1px solid #ff6b6b;
+    color: #ff6b6b;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.sidebar-footer a:hover {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+/* MAIN CONTENT: Takes remaining width */
+.main-content {
+    flex-grow: 1;
+    background-color: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Match screen height */
+    overflow-y: auto; /* Allow scrolling inside content only */
+}
+
+/* Header inside Main Content */
+.top-header {
+    background: white;
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* Content Padding */
+.content-padding {
+    padding: 30px;
+}
+
+/* Sidebar Icons */
+.sidebar a i {
+    margin-right: 10px;
+    width: 20px; /* Fixed width for alignment */
+    text-align: center;
+}
+
+/* --- 10. HEADER PROFILE & MODAL --- */
+
+/* Header Profile Section (Right Aligned) */
+.top-header {
+    display: flex;
+    justify-content: space-between; /* Pushes Title left, Profile right */
+    align-items: center;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Clickable hand icon */
+    padding: 5px 15px;
+    border-radius: 30px;
+    transition: background 0.3s;
+    border: 1px solid transparent;
+}
+
+.user-profile:hover {
+    background-color: rgba(12, 36, 97, 0.05); /* Light hover effect */
+    border-color: #ddd;
+}
+
+.user-name {
+    margin-right: 10px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* --- MODAL STYLES (Pop-up) --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; 
+    z-index: 2000; /* On top of sidebar */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.5); /* Dimmed background */
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto; /* 10% from top, centered */
+    padding: 0;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px; /* Max width for desktop */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 { font-size: 1.2rem; margin: 0; color: white; }
+
+.close-modal {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover { color: var(--accent-color); }
+
+.modal-body { padding: 25px; }
+
+/* Profile Grid inside Modal */
+.profile-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.detail-item label {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.detail-item p {
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    font-size: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.full-width { grid-column: span 2; }
+
+/* --- 11. DATATABLES CUSTOM STYLING (Fix Search/Entries Layout) --- */
+
+/* Wrapper Padding */
+.dataTables_wrapper {
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    color: #555;
+}
+
+/* Header Controls (Show Entries & Search) */
+.dataTables_length, 
+.dataTables_filter {
+    margin-bottom: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Align Search to the Right */
+.dataTables_filter {
+    float: right;
+    text-align: right;
+}
+
+/* Align Length to the Left */
+.dataTables_length {
+    float: left;
+}
+
+/* Style Inputs and Selects */
+.dataTables_wrapper input[type="search"], 
+.dataTables_wrapper select {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-left: 5px;
+    outline: none;
+    color: #333;
+    transition: border 0.3s;
+}
+
+.dataTables_wrapper input[type="search"]:focus, 
+.dataTables_wrapper select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(12, 36, 97, 0.2);
+}
+
+/* Table Info (Showing 1 to 10 of...) */
+.dataTables_info {
+    float: left;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Pagination Buttons */
+.dataTables_paginate {
+    float: right;
+    margin-top: 15px;
+}
+
+.dataTables_paginate .paginate_button {
+    padding: 6px 12px;
+    margin-left: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background: white;
+    color: #333 !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background: #f0f0f0;
+    color: #000 !important;
+    border-color: #ccc;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background-color: var(--primary-color);
+    color: white !important;
+    border-color: var(--primary-color);
+}
+
+.dataTables_paginate .paginate_button.disabled {
+    color: #ccc !important;
+    cursor: not-allowed;
+    background: #f9f9f9;
+    border-color: #eee;
+}
+
+/* Clear Floats */
+.dataTables_wrapper::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* Responsive Fix for Mobile */
+@media (max-width: 768px) {
+    .dataTables_length, 
+    .dataTables_filter, 
+    .dataTables_info, 
+    .dataTables_paginate {
+        float: none;
+        text-align: center;
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .dataTables_wrapper input[type="search"] {
+        width: 80%; /* Wider search bar on mobile */
+        margin-top: 5px;
+    }
+}
+
+/* --- 11. DATATABLES CUSTOM STYLING --- */
+
+/* Wrapper: Adds spacing around the whole area */
+.dataTables_wrapper {
+    padding: 10px 0;
+    clear: both;
+    width: 100%;
+}
+
+/* --- HEADER CONTROLS (Show entries & Search) --- */
+.dataTables_length, 
+.dataTables_filter {
+    margin-bottom: 25px; /* Adds space between controls and the table header */
+}
+
+/* Fix for "Show entries" dropping to new line */
+.dataTables_length label {
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevents text wrapping */
+}
+
+/* CRITICAL FIX: Overrides global 100% width on select inputs */
+.dataTables_length select {
+    width: auto !important; /* Forces dropdown to be small */
+    margin: 0 10px;
+    display: inline-block;
+}
+
+/* Fix for Search Input alignment */
+.dataTables_filter {
+    text-align: right;
+}
+
+.dataTables_filter label {
+    display: inline-flex;
+    align-items: center;
+}
+
+.dataTables_filter input {
+    width: 250px !important; /* Makes search box wider */
+    margin-left: 10px;
+    display: inline-block;
+}
+
+/* --- TABLE SPACING --- */
+table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 25px !important; /* Space between table and footer */
+    border-collapse: collapse !important;
+}
+
+/* --- FOOTER CONTROLS (Showing 1 to 10... & Pagination) --- */
+.dataTables_info {
+    float: left;
+    margin-top: 15px;
+    color: #666;
+}
+
+.dataTables_paginate {
+    float: right;
+    margin-top: 15px;
+}
+
+/* Pagination Buttons Style */
+.dataTables_paginate .paginate_button {
+    padding: 8px 14px;
+    margin-left: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background: white;
+    color: #333 !important;
+    text-decoration: none;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background: #f0f0f0;
+    color: var(--primary-color) !important;
+    border-color: #ccc;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: var(--primary-color);
+    color: white !important;
+    border-color: var(--primary-color);
+}
+
+/* Clear floats */
+.dataTables_wrapper::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* ... [Keep all your existing code] ... */
+
+/* --- 12. RESIDENT DASHBOARD STYLES (Add this to the bottom) --- */
+
+/* Navigation Bar */
+nav {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0 30px; /* Horizontal padding */
+    height: 70px;    /* Fixed height */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Brand Logo Area */
+nav .brand {
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+}
+
+/* Right-side Links */
+nav .nav-links {
+    display: flex;
+    align-items: center;
+}
+
+nav .nav-links a {
+    color: rgba(255, 255, 255, 0.85);
+    margin-left: 25px;
+    font-weight: 500;
+    transition: color 0.3s;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+nav .nav-links a:hover {
+    color: var(--accent-color);
+}
+
+/* Main Container */
+.container {
+    max-width: 1000px;
+    margin: 40px auto; /* Centers the content */
+    padding: 0 20px;
+}
+
+/* Responsive adjustments for Resident Page */
+@media (max-width: 768px) {
+    nav {
+        padding: 0 15px;
+    }
+    nav .brand {
+        font-size: 1.1rem;
+    }
+    .container {
+        margin-top: 20px;
+    }
+}
+
+/* --- TABLE CONTROLS (Filters) --- */
+.table-controls { 
+    margin-bottom: 15px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.table-controls label { 
+    margin: 0;                 /* Removes global margin-bottom: 8px */
+    font-weight: bold; 
+    color: #555; 
+    white-space: nowrap;       /* Keeps label on one line */
+}
+
+.filter-select { 
+    padding: 8px 12px; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    outline: none; 
+    width: auto !important;    /* Fixes width */
+    min-width: 200px; 
+    margin: 0 !important;      /* <--- CRITICAL FIX: Removes global margin-bottom: 10px */
+}
+
+/* --- DATATABLES ALIGNMENT FIX --- */
+
+/* 1. Force the labels to use Flexbox for perfect vertical centering */
+.dataTables_length label,
+.dataTables_filter label {
+    display: inline-flex !important; /* Lines up text and input side-by-side */
+    align-items: center !important;  /* Centers them vertically */
+    margin: 0 !important;            /* Removes extra space around the text */
+    gap: 8px;                        /* Adds nice space between "Search:" and the box */
+}
+
+/* 2. Remove the global margin that pushes inputs up */
+.dataTables_wrapper select, 
+.dataTables_wrapper input {
+    margin-bottom: 0 !important;     /* <--- KEY FIX: Removes the global 20px gap */
+    margin-top: 0 !important;
+    vertical-align: middle;          /* Ensures alignment in all browsers */
+    height: 38px;                    /* Matches the height of your new Filter dropdown */
+}
+
+/* 3. (Optional) Make the "Show entries" dropdown auto-width like your filter */
+.dataTables_length select {
+    width: auto !important;
+    padding-right: 25px;             /* Space for the arrow */
+}
+
