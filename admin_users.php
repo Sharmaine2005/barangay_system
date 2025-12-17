@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'includes/db_connect.php';
-require_once 'includes/functions.php'; // <--- Add this
+require_once 'includes/functions.php';
 
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['city_admin', 'barangay_admin'])) {
     header("Location: index.php");
@@ -40,7 +40,6 @@ if ($is_city_admin) {
 }
 $result = $conn->query($sql);
 
-// SET TITLE FOR HEADER
 $page_title = "Verify Pending Users";
 ?>
 
@@ -52,6 +51,31 @@ $page_title = "Verify Pending Users";
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- BUTTON FIXES --- */
+        
+        /* 1. Force buttons to be small and auto-width (Overrides global 100% width) */
+        .btn-sm {
+            width: auto !important; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            margin-right: 5px;
+        }
+
+        /* 2. Align buttons side-by-side */
+        td form {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 3. Add tooltips on hover */
+        .btn-approve:hover, .btn-decline:hover {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -74,29 +98,36 @@ $page_title = "Verify Pending Users";
                         </div>
                         <table>
                             <thead>
-                                <tr><th>Name</th><th>Barangay</th><th>Address</th><th>Action</th></tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Barangay</th>
+                                    <th>Address</th>
+                                    <th style="width: 100px;">Action</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <?php while($row = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($row['first_name']." ".$row['last_name']); ?></td>
                                     <td><?php echo htmlspecialchars($row['barangay']); ?></td>
-                                        <?php 
-                                            // Logic to remove Barangay from Address string
-                                            $full_address = $row['address'];
-                                            $barangay_name = $row['barangay'];
-                                            
-                                            // Remove the barangay name and clean up extra commas
-                                            $short_address = str_replace($barangay_name, "", $full_address);
-                                            $short_address = str_replace(", ,", ",", $short_address); // Fix double commas
-                                            $short_address = trim($short_address, ", "); // Trim edge commas
-                                        ?>
-                                        <td><?php echo htmlspecialchars($short_address); ?></td>                                    
+                                    <?php 
+                                        // Logic to remove Barangay from Address string
+                                        $full_address = $row['address'];
+                                        $barangay_name = $row['barangay'];
+                                        $short_address = str_replace($barangay_name, "", $full_address);
+                                        $short_address = str_replace(", ,", ",", $short_address); 
+                                        $short_address = trim($short_address, ", "); 
+                                    ?>
+                                    <td><?php echo htmlspecialchars($short_address); ?></td>                                    
                                     <td>
                                         <form method="POST">
                                             <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                                            <button type="submit" name="action" value="approve" class="btn btn-sm btn-approve">✔</button>
-                                            <button type="submit" name="action" value="reject" class="btn btn-sm btn-decline">✖</button>
+                                            <button type="submit" name="action" value="approve" class="btn btn-sm btn-approve" title="Approve">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button type="submit" name="action" value="reject" class="btn btn-sm btn-decline" title="Reject">
+                                                <i class="fas fa-times"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -112,14 +143,16 @@ $page_title = "Verify Pending Users";
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() { 
-            // Destroy existing table if it exists to prevent re-init error (safety check)
             if ($.fn.DataTable.isDataTable('table')) {
                 $('table').DataTable().destroy();
             }
 
-            var table = $('table').DataTable(); 
+            var table = $('table').DataTable({
+                "language": {
+                    "emptyTable": "No pending users found"
+                }
+            }); 
             
-            // Filter Logic: Column 1 is "Barangay"
             $('#brgyFilter').on('change', function() {
                 table.column(1).search(this.value).draw();
             });

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'includes/db_connect.php';
-require_once 'includes/functions.php'; // <--- Add this
+require_once 'includes/functions.php';
 
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['city_admin', 'barangay_admin'])) {
     header("Location: index.php");
@@ -22,7 +22,7 @@ if (isset($_POST['request_id'])) {
     $stmt->bind_param("si", $status, $req_id);
     
     if ($stmt->execute()) {
-        // 2. LOG THE ACTION <--- New Code
+        // 2. LOG THE ACTION
         $log_message = ucfirst($action_taken) . " Document Request ID: " . $req_id;
         logAction($conn, $log_message);
     }
@@ -38,7 +38,6 @@ if ($is_city_admin) {
 }
 $result = $conn->query($sql);
 
-// SET TITLE FOR HEADER
 $page_title = "Document Requests";
 ?>
 
@@ -50,6 +49,31 @@ $page_title = "Document Requests";
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- BUTTON FIXES --- */
+        
+        /* 1. Force buttons to be small and auto-width */
+        .btn-sm {
+            width: auto !important; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            margin-right: 5px;
+        }
+
+        /* 2. Align buttons side-by-side inside the form */
+        td form {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 3. Add hover effect */
+        .btn-approve:hover, .btn-decline:hover {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -72,7 +96,14 @@ $page_title = "Document Requests";
                         </div>
                         <table>
                             <thead>
-                                <tr><th>Name</th><th>Barangay</th><th>Doc</th><th>Date</th><th>Status</th><th>Action</th></tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Barangay</th>
+                                    <th>Doc</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th style="width: 120px;">Action</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <?php while($row = $result->fetch_assoc()): ?>
@@ -86,13 +117,19 @@ $page_title = "Document Requests";
                                         <?php if ($row['status'] == 'pending'): ?>
                                             <form method="POST">
                                                 <input type="hidden" name="request_id" value="<?php echo $row['id']; ?>">
-                                                <button type="submit" name="action" value="approve" class="btn btn-sm btn-approve">✔</button>
-                                                <button type="submit" name="action" value="decline" class="btn btn-sm btn-decline">✖</button>
+                                                <button type="submit" name="action" value="approve" class="btn btn-sm btn-approve" title="Approve">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="submit" name="action" value="decline" class="btn btn-sm btn-decline" title="Reject">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
                                             </form>
                                         <?php elseif ($row['status'] == 'approved'): ?>
-                                            <a href="generate_certificate.php?id=<?php echo $row['id']; ?>" target="_blank" class="btn btn-sm btn-print">Print</a>
+                                            <a href="generate_certificate.php?id=<?php echo $row['id']; ?>" target="_blank" class="btn btn-sm btn-print">
+                                                <i class="fas fa-print"></i> Print
+                                            </a>
                                         <?php else: ?>
-                                            <span style="color:#aaa;">Rejected</span>
+                                            <span style="color:#aaa; font-style:italic;">Rejected</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -116,7 +153,6 @@ $page_title = "Document Requests";
                 "order": [[ 3, "desc" ]] // Sort by Date (Column 3)
             }); 
 
-            // Filter Logic: Column 2 is "Doc"
             $('#docFilter').on('change', function() {
                 table.column(2).search(this.value).draw();
             });
